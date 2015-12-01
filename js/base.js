@@ -4,6 +4,33 @@ var Task = function() {
 	
 }
 
+
+APP = {
+	current_view: 'standard',
+	sort_order: 'latest',
+	init: function() {
+		$('[nav-button], [close-nav]').click(function() {
+			$('nav').toggleClass('display');
+		});
+		console.log('Lets Go!');
+		console.log(this);
+	},
+	getTemplate: function(name) {
+
+	},
+	showTaskView: function() {
+
+	},
+	orderTasks: function() {
+		
+	}
+};
+
+
+
+
+APP.init();
+
 // var VANO = VANO || {};
 
 // VANO = {
