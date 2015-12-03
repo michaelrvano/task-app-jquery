@@ -64,7 +64,7 @@ $links = array(
 			<i class="fa fa-bars size24"></i>
 		</a>
 	</header>
-	<nav class="display">
+	<nav>
 		<a class="close-nav" close-nav>
 			<i class="fa fa-chevron-right"></i>
 		</a>
@@ -87,11 +87,29 @@ $links = array(
 		}
 		?>
 	</nav>
-	<a add-task>
-	</a>
-	<div class="tasks" tasks></div>
+	<a add-task></a>
+	<div class="tasks">
+		<div class="col-md-2 visible-md visible-lg">
+			<div class="size18 mb10 bold">Category Legend</div>
+			<div category-legend></div>
+		</div>
+		<div class="col-md-8" tasks>
+			<div class="task" style="background-color:#adfedf; color:#000;">
+				<div class="title" title>
+					Something to do
+				</div>
+				<div class="description" description>
+					Just testing out some stuff.
+				</div>
+			</div>
+		</div>
+	</div>
 	<footer></footer>
 	<div class="hide">
+		<div class="category" template="category">
+			<div class="color inline-block" colors></div>
+			- <span name></span>
+		</div>
 		<div template="task">
 
 		</div>
