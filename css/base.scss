@@ -1,17 +1,48 @@
 // $VARIABLES
+
+// colors
+$black: #000;
 $white: #FFF;
 $grey: #666;
-$purple: #781198;
-$hover-purple: #F0E7F3;
 $light-grey: #ddd;
 $dark-grey: #999;
 $grey-hover: #ededed;
+$light-blue: #ddddff;
+$purple: #781198;
+$dark-purple: #560076;
+$hover-purple: #F0E7F3;
+$dark-red: #990000;
+$light-red: #ffeeee;
 $lato: 'Lato', sans-serif;
 $box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
 $break-lg: 1199px;
 $break-md: 991px;
 $break-sm: 767px;
 $break-xs: 479px;
+
+
+
+// $MIXINS
+@mixin border-radius($radius) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius;
+}
+
+@mixin box-shadow($y, $x, $blur, $spread, $color)
+{
+	-moz-box-shadow: $y $x $blur $spread $color;
+	-webkit-box-shadow: $y $x $blur $spread $color;
+	box-shadow: $y $x $blur $spread $color;
+}
+
+@mixin transform($value) {
+	-ms-transform: $value; 
+	-webkit-transform: $value;
+	transform: $value;
+}
+
 
 
 
@@ -71,6 +102,7 @@ a {cursor:pointer;}
 .w75 {width:75%;}
 .w80 {width:80%;}
 .w90 {width:90%;}
+.w100 {width:100%;}
 
 .mr5 {margin-right:5px;}
 .mr10 {margin-right:10px;}
@@ -204,6 +236,20 @@ img.limit {max-width:180px;}
 
 .v-align-middle {vertical-align: middle;}
 
+.close-button
+{
+	border-right:1px solid $purple;
+	border-bottom:1px solid $purple;
+	color:$purple;
+	display:block;
+	font-size:20px;
+	left:0;
+	padding:7px 15px;
+	position:absolute;
+	top:0;
+	&:hover { background-color:$hover-purple; }
+}
+
 
 
 
@@ -264,18 +310,6 @@ nav {
 		-webkit-transform: translateX(-100%);
 		-ms-transform: translateX(-100%);
 	}
-	.close-nav {
-		border-right:1px solid $purple;
-		border-bottom:1px solid $purple;
-		color:$purple;
-		display:block;
-		font-size:20px;
-		left:0;
-		padding:7px 15px;
-		position:absolute;
-		top:0;
-		&:hover { background-color:$hover-purple; }
-	}
 	.title {
 		position:absolute;
 		right:20px;
@@ -306,14 +340,214 @@ nav {
 
 
 /******************************************************
-	$TASKS
+	$FORMS
 ******************************************************/
-.tasks {
-	margin-top:80px;
+.custom-form {
+	.title {
+		border-bottom:1px dashed $light-grey;
+		font-size:20px;
+		font-weight:bold;
+		margin-bottom:15px;
+		padding-bottom:10px;
+		padding-right:30px;
+		text-align:right;
+	}
+	.group {
+		display:inline-block;
+		margin-bottom:25px;
+		position:relative;
+		label {
+			color:$grey;
+			font-size:18px;
+			-webkit-font-smoothing: antialiased;
+			height:40px;
+			left:12px;
+			line-height:40px;
+			position:absolute;
+			top:3px;
+			z-index:-1;
+		}
+		input, 
+		textarea,
+		select {
+			background-color:transparent;
+			border:1px solid $light-grey;
+			font-size:16px;
+			padding: 30px 8px 15px;
+			width:100%;
+			~ .bar {
+				background-color: transparent;
+				height:2px;
+				margin:0 auto;
+				width: 1px;
+			}
+			&.error {
+				border-color: $dark-red;
+				~ label {
+					color:$dark-red;
+				}
+			}
+			&:focus,
+			&.active {
+				border: 1px solid transparent;
+				outline: none;
+				~ label {
+					background-color:$white;
+					color: $purple;
+					font-size:12px;
+					height:20px;
+					line-height:20px;
+					z-index:1;
+				}
+				~ .bar {
+					background-color: $purple;
+					width:99%;
+					
+				}
+			}
+		}
+		input,
+		select {
+			height:45px;
+		}
+		select {
+			padding:0 10px;
+			text-align:right;
+		}
+		textarea {
+			height:200px;
+			resize: none;
+		}
+	}
+	.error-message {
+		background-color: $light-red;
+		border:1px solid $dark-red;
+		color: $dark-red;
+		padding:10px 20px;
+		vertical-align:top;
+	}
+	button {
+		background-color: transparent;
+		border: 1px solid $purple;
+		color: $purple;
+		font-size:18px;
+		outline: none;
+		padding: 10px 20px;
+		&:hover,
+		&active {
+			background-color: $purple;
+			color: $white;
+		}
+	}
 }
 
 
 
+
+
+
+
+
+
+/******************************************************
+	$TASKS
+******************************************************/
+.add-task {
+	background-color: $purple;
+	@include border-radius(50%);
+	bottom:20px;
+	@include box-shadow(0, 0, 5px, 0, rgba(0,0,0,0.2));
+	color: $white;
+	display:block;
+	font-size:28px;
+	height:60px;
+	line-height:60px;
+	position:fixed;
+	right:20px;
+	text-align:center;
+	width:60px;
+	&:hover,
+	&:active {
+		color: $white;
+		background-color: $dark-purple;
+	}
+	&:active {
+		@include transform(scale(0.8,0.8));
+	}
+}
+.tasks {
+	margin-top:80px;
+	&.standard {
+		.task {
+			@include box-shadow(0, 0, 5px, 0, rgba(0,0,0,0.1));
+			color:#000;
+			display:inline-block;
+			margin:0 1% 20px;
+			width:22%;
+			.title,
+			.description {
+				padding:5px 10px;
+			}
+			.title {
+				font-size:16px;
+				background-color:rgba(255,255,255,0.8);
+			}
+			.buttons {
+				
+			}
+			&:hover {
+				@include box-shadow(0,0,5px,0,rgba(120,17,152,0.5));
+			}
+
+		}
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+/******************************************************
+	$POP OUT
+******************************************************/
+.popout {
+	position:fixed;
+	bottom:0;
+	right:-35%;
+	width:35%;
+	min-height:65%;
+	max-height:100%;
+	z-index:8;
+	background-color: $white;
+	@include box-shadow(0, 0, 5px, 0, rgba(0,0,0,0.2));
+	padding:20px 30px;
+	&.display {
+		right: 0;
+	}
+}
+@media screen and (max-width: $break-lg) { 
+	.popout {
+		width:50%;
+		right:-50%;
+	}
+}
+@media screen and (max-width: $break-sm) {
+	.popout {
+		width:65%;
+		right:-65%;
+	}
+}
+@media screen and (max-width: $break-xs) {
+	.popout {
+		width:80%;
+		right:-80%;
+	}
+}
 
 
 
@@ -338,6 +572,52 @@ nav {
 	}
 }
 
+
+
+
+
+
+
+
+
+/******************************************************
+	$EFFECTS
+******************************************************/
+.clicked {
+	background:transparent;
+	border:1px solid $grey;
+	@include border-radius(50%);
+	display:none;
+	height:10px;
+	position:fixed;
+	width:10px;
+	z-index:1000;
+	&.animate {
+		display:block;
+		animation-name: expand;
+		animation-duration: 350ms;
+	}
+}
+@keyframes expand {
+	from {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(4,4);
+		opacity: 0;
+	}
+}
+@-webkit-keyframes expand {
+	from {
+		transform: scale(1,1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(2,2);
+		opacity: 0;
+	}
+}
 
 
 

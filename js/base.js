@@ -1,9 +1,175 @@
 var APP = APP || {};
 
-var Task = function() {
-	
+/* ========================
+	Task Class
+==========================*/
+var Task = function(data) {
+	var _this = this;
+	_this.id = data.id;
+	_this.background_color = data.background_color;
+	_this.category_name = data.category;
+	_this.category_id = data.category_id;
+	_this.date_created = data.date_created;
+	_this.description = data.description;
+	_this.is_complete = data.is_complete;
+	_this.title = data.title;
+	_this.buildHTML();
+};
+Task.prototype.buildHTML = function() {
+	var _this = this;
+	if (typeof APP.templates['task'] !== typeof undefined)
+	{
+		_this.html = APP.templates['task'].clone(true);
+	}
 };
 
+/* ========================
+	Task Form Class
+==========================*/
+var TaskForm = function(data) {
+	var _this = this;
+	_this.buildHTML();
+	APP.popout.addClass('display');
+};
+TaskForm.prototype.loadCategories = function() {
+	var _this = this;
+	var target = _this.html.find('[categories]');
+	if (APP.categories.length > 0)
+	{
+		target.html('<option value="">Select Category</option>');
+		for(i=0; i < APP.categories.length; i++)
+		{
+			var category = APP.categories[i];
+			var option = '<option value="'+category.id+'">'+category.name+'</option>';
+			target.append(option);
+		}
+	}
+};
+TaskForm.prototype.buildHTML = function() {
+	var _this = this;
+	var target = $('[popout] [content]');
+	_this.html = APP.templates['task-form'].clone(true);
+	_this.loadCategories();
+	if (typeof _this.id !== typeof undefined && _this.id != '') 
+	{
+		_this.html.find('[title]').html('<i class="fa fa-edit"></i> Edit Task');
+		_this.html.find('button').html('Edit Task');
+	}
+	else
+	{
+		_this.html.find('[title]').html('<i class="fa fa-plus"></i> Add Task');
+		_this.html.find('button').html('Add Task');
+	}
+	_this.html.find('button').click(function() { _this.prepare(); });
+	target.html(_this.html);
+	APP.formEffects();
+};
+TaskForm.prototype.prepare = function() {
+	var _this = this;
+	var _html = _this.html;
+	_this.name = _html.find('[name]').val();
+	_this.description = _html.find('[description]').val();
+	_this.category = _html.find('[categories]').val();
+	_this.validate();
+};
+TaskForm.prototype.validate = function() {
+	var _this = this;
+	_this.valid = true;
+	if (_this.category == '') {
+		_this.html.find('[categories]').addClass('error');
+		_this.valid = false;
+	}
+	else {
+		_this.html.find('[name]').removeClass('error');
+	} 
+	if (_this.name == '') {
+		_this.html.find('[name]').addClass('error');
+		_this.valid = false;
+	}
+	else {
+		_this.html.find('[name]').removeClass('error'); 
+	} 
+	if (_this.description == '') {
+		_this.html.find('[description]').addClass('error');
+		_this.valid = false;
+	}
+	else {
+		_this.html.find('[description]').removeClass('error');
+	}
+	if (_this.valid)
+	{
+		_this.html.find('[error-message]').hide();
+		_this.submit();
+	}
+	else
+	{
+		_this.showError('All fields are required');
+		
+	}
+}
+TaskForm.prototype.submit = function() {
+	var _this = this;
+	var button = _this.html.find('button');
+	var button_text = button.html();
+	button.html(APP.saving);
+	if (typeof _this.id !== typeof undefined && _this.id != '')
+	{
+	}
+	else {
+		var post_data = {
+			class: 'tasks',
+			action: 'addTask',
+			options: {
+				name: _this.name,
+				description: _this.description,
+				category: _this.category
+			}
+		};
+		$.post(APP.url_api, post_data, function(data){
+			if (!$.isEmptyObject(data)) 
+			{
+				if (!data.error)
+				{
+					_this.id = data.id;
+					APP.loadTasks();
+					APP.popout.removeClass('display');
+					_this.html.html('');
+					_this.html.find('[error-message]').hide();
+				}
+				else
+				{
+					_this.showError('There was an error in saving this task. Please try again');
+				}
+			}
+		},'JSON');
+	}
+}
+TaskForm.prototype.showError = function(message) {
+	_this.html.find('[error-message]').html(message);
+	_this.html.find('[error-message]').show();
+}
+// TaskForm.prototype.getTask = function() {
+// 	var _this = this;
+// 	if (typeof _this.id !== typeof undefined && _this.id != '')
+// 	{
+// 		var post_data = {
+// 			class: 'tasks',
+// 			action: 'getTasks',
+// 			options: { id: _this.id }
+// 		};
+// 		$.post(APP.url_api, post_data, function(data){
+// 			if (!$.isEmptyObject(data))
+// 			{
+// 				var task = new Task();
+// 				console.log(data[0]);
+// 			}
+// 		},'JSON');
+// 	}
+// }
+
+/* ========================
+	Category Class
+==========================*/
 var Category = function(v) {
 	this.id = v.id;	
 	this.name = v.name;
@@ -39,13 +205,22 @@ APP = {
 	templates: [],
 	categories: [],
 	tasks: [],
+	saving: 'Saving...<i class="fa fa-circle-o-notch fa-spin"></i>',
+	popout: $('[popout]'),
 	init: function() {
 		$('[nav-button], [close-nav]').click(function() {
 			$('nav').toggleClass('display');
 		});
+		$('[close-popout]').click(function() {
+			APP.popout.removeClass('display');
+		});
+		$('[add-task]').click(function() {
+			new TaskForm();
+		});
 		this.loadTemplates();
 		this.loadCategories();
 		this.loadTasks();
+		window.addEventListener('mouseup', this.clickEffect.bind(this), true);
 		console.log('Lets Go!');
 	},
 	loadCategories: function() {
@@ -64,29 +239,13 @@ APP = {
 			}
 		});
 	},
-	loadTasks: function() {
-		var post_data = {
-			class: 'tasks',
-			action: 'getTasks'
-		};
-		$.getJSON(this.url_api, post_data, function(data){
-			if (!$.isEmptyObject(data)) 
-			{
-				$.each(data, function(k,v) {
-					var task = new Task(v);
-					APP.tasks.push(task);
-				});
-				APP.displayCategories();
-			}
-		});
-	},
 	displayCategories: function() {
 		console.log('Displaying Categories!');
 		var $target = $('[category-legend]');
 		if (this.categories.length > 0)
 		{
 			for(i=0; i < this.categories.length; i++) {
-				if (i == 0)
+				if (i == 0) 
 				{
 					$target.html(this.categories[i].html);	
 				}
@@ -95,6 +254,57 @@ APP = {
 					$target.append(this.categories[i].html);
 				}
 			};
+		}
+		else
+		{
+			$target.html('No Categories');
+		}
+	},
+	loadTasks: function() {
+		var _this = this;
+		var post_data = {
+			class: 'tasks',
+			action: 'getTasks'
+		};
+		$.getJSON(_this.url_api, post_data, function(data){
+			if (!$.isEmptyObject(data)) 
+			{
+				$.each(data, function(k,v) {
+					var task = new Task(v);
+					_this.tasks.push(task);
+				});
+				_this.displayTasks();
+			}
+		});
+	},
+	displayTasks: function() {
+		console.log('Displaying Tasks!');
+		var _this = this;
+		var $target = $('[tasks]');
+		$target.html('');
+		if (_this.tasks.length > 0)
+		{
+			for(i=0; i<_this.tasks.length; i++)
+			{
+				var task = _this.tasks[i];
+				if (task.is_complete == 1) { continue; }
+				else 
+				{
+
+				}
+			}
+		}
+	},
+	displayCompleteTasks: function() {
+		console.log('Displaying Completed Tasks!');
+		var $target = $('[tasks]');
+		if (this.tasks.length > 0)
+		{
+
+		}
+		else
+		{
+
 		}
 	},
 	loadTemplates: function() {
@@ -112,11 +322,28 @@ APP = {
 			};
 		}
 	},
+	formEffects: function() {
+		$('[custom-form] input[type="text"], [custom-form] textarea, [custom-form] select').blur(function() {
+			if ($(this).val() != '') { $(this).addClass('active'); $(this).removeClass('error'); }
+			else { $(this).removeClass('active'); }
+		});
+	},
 	showTaskView: function() {
 
 	},
 	orderTasks: function() {
 		
+	},
+	clickEffect: function(e) {
+		var target = $('[clicked]');
+		var top = e.clientY-5;
+		var left = e.clientX-5;
+		var style = 'top:'+top+'px; left:'+left+'px';
+		target.attr('style', style);
+		target.addClass('animate');
+		setTimeout(function() {
+			target.removeClass('animate');
+		}, 310);		
 	}
 };
 

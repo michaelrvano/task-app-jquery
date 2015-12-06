@@ -55,6 +55,7 @@ $links = array(
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 	<link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	<link href="css/sweetalert.css" rel="stylesheet" type="text/css"/>
 	<link href="css/base.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
@@ -65,7 +66,7 @@ $links = array(
 		</a>
 	</header>
 	<nav>
-		<a class="close-nav" close-nav>
+		<a class="close-button" close-nav>
 			<i class="fa fa-chevron-right"></i>
 		</a>
 		<div class="title size24">
@@ -87,22 +88,24 @@ $links = array(
 		}
 		?>
 	</nav>
-	<a add-task></a>
-	<div class="tasks">
-		<div class="col-md-2 visible-md visible-lg">
+	<a class="add-task" add-task>
+		<i class="fa fa-plus"></i>
+	</a>
+	<div class="tasks standard">
+		<div class="col-md-2 visible-md visible-lg relative">
 			<div class="size18 mb10 bold">Category Legend</div>
 			<div category-legend></div>
 		</div>
 		<div class="col-md-8" tasks>
-			<div class="task" style="background-color:#adfedf; color:#000;">
-				<div class="title" title>
-					Something to do
-				</div>
-				<div class="description" description>
-					Just testing out some stuff.
-				</div>
-			</div>
+				
+				
 		</div>
+	</div>
+	<div class="popout" popout>
+		<a class="close-button" close-popout>
+			<i class="fa fa-chevron-right"></i>
+		</a>
+		<div content></div>
 	</div>
 	<footer></footer>
 	<div class="hide">
@@ -110,13 +113,45 @@ $links = array(
 			<div class="color inline-block" colors></div>
 			- <span name></span>
 		</div>
-		<div template="task">
-
+		<div class="task" template="task">
+			<div class="title" title></div>
+			<div class="description" description></div>
+			<div class="button">
+				<i class="fa fa-check"></i>
+				<i class="fa fa-edit"></i>
+				<i class="fa fa-trash"></i>
+			</div>
 		</div>
+		<div class="custom-form" template="task-form" custom-form>
+			<div class="title" title></div>
+			<div class="group w100">
+				<select categories></select>
+				<div class="bar"></div>
+			</div>
+			<div class="group w100">
+				<input type="text" name />
+				<label>Task Title</label>
+				<div class="bar"></div>
+			</div>
+			<div class="group w100">
+				<textarea description></textarea>
+				<label>Task Description</label>
+				<div class="bar"></div>
+			</div>
+			<div class="w70 inline-block">
+				<div class="error-message w100" style="display:none;" error-message></div>
+			</div><div class="w30 text-right inline-block">
+				<button type="submit"></button>
+			</div>
+		</div>
+		<form template="category-form" >
+			
+		</form>
 	</div>
 	<!-- SCRIPTS -->
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/sweetalert.min.js" type="text/javascript"></script>
 	<script src="js/base.js" type="text/javascript"></script>
 	<script>
 		// $(document).ready(function(){
@@ -137,6 +172,7 @@ $links = array(
 		// 	// VANO.init();
 		// });
 	</script>
+	<div class="clicked" clicked></div>
 </body>
 </html>
 
