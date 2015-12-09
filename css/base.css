@@ -8,6 +8,8 @@ body {
   font-size: 14px;
   line-height: 1.3;
   letter-spacing: 1.2; }
+  body.popup-view {
+    overflow: hidden; }
 
 * {
   transition: all 300ms ease;
@@ -79,6 +81,9 @@ a {
 
 .relative {
   position: relative; }
+
+.fixed {
+  position: fixed; }
 
 .w10 {
   width: 10%; }
@@ -419,6 +424,20 @@ img.limit {
   .close-button:hover {
     background-color: #F0E7F3; }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 9999; }
+  .overlay.display {
+    visibility: visible;
+    opacity: 0.75; }
+
 /******************************************************
 	$HEADER
 ******************************************************/
@@ -597,7 +616,8 @@ nav {
   position: fixed;
   right: 20px;
   text-align: center;
-  width: 60px; }
+  width: 60px;
+  z-index: 2; }
   .add-task:hover, .add-task:active {
     color: #FFF;
     background-color: #560076; }
@@ -653,6 +673,11 @@ nav {
         -ms-transform: translateX(-10px);
         -webkit-transform: translateX(-10px);
         transform: translateX(-10px); }
+
+.task-full-view {
+  max-width: 96%;
+  position: fixed;
+  z-index: 10000; }
 
 /******************************************************
 	$POP OUT

@@ -16,6 +16,7 @@ var Task = function(data) {
 	_this.is_complete = data.is_complete;
 	_this.title = data.title;
 	_this.buildHTML();
+
 };
 Task.prototype.buildHTML = function() {
 	var _this = this;
@@ -48,7 +49,50 @@ Task.prototype.buildHTML = function() {
 };
 Task.prototype.fullView = function() {
 	var _this = this;
-	console.log('Full View!');	
+	if (typeof APP.templates['task-full'] !== typeof undefined)
+	{
+		_this.detail_html = APP.templates['task-full'].clone(true);
+		_this.getProperties();
+		var style = ''+
+			'background-color:'+_this.background_color+';'+
+			'width:'+_this.width+'px;'+
+			'height:'+_this.height+'px;'+
+			'top:'+_this.posY+'px;'+
+			'left:'+_this.posX+'px;'+
+		'';
+		_this.detail_html.attr('style', style);
+		$('body').append(_this.detail_html);
+		$('[overlay]').addClass('display');
+		$('[overlay]').click(function() { _this.closeFullView(); });
+		_this.detail_html.find('[close-detail]').click(function() { _this.closeFullView(); });
+		_this.detail_html.animate({
+			top: '4%',
+			left: '10%',
+			width: '80%',
+			height: '75%'
+		}, 0);
+	}
+};
+Task.prototype.getProperties = function() {
+	var _this = this;
+	_this.posY = _this.html.offset().top - $(window).scrollTop();
+	_this.posX = _this.html.offset().left; 
+	_this.width = _this.html.outerWidth();
+	_this.height = _this.html.outerHeight();
+}
+Task.prototype.closeFullView = function() {
+	var _this = this;
+	_this.getProperties();
+	_this.detail_html.animate({
+			top: _this.posY+'px',
+			left: _this.posX+'px',
+			width: _this.width+'px',
+			height: _this.height+'px',
+			opacity: 0.3
+	}, 0);
+	window.setTimeout(function() { _this.detail_html.remove(); }, 300);
+	$('[overlay]').removeClass('display');
+	$('[overlay]').unbind('click');
 };
 Task.prototype.markComplete = function(e) {
 	e.stopPropagation();

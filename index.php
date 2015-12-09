@@ -92,11 +92,11 @@ $links = array(
 		<i class="fa fa-plus"></i>
 	</a>
 	<div class="tasks standard">
-		<div class="col-md-2 visible-md visible-lg relative">
+		<div class="col-md-2 visible-md visible-lg fixed">
 			<div class="size18 mb10 bold">Category Legend</div>
 			<div category-legend></div>
 		</div>
-		<div class="col-md-8" tasks></div>
+		<div class="col-md-8 col-md-offset-2" tasks></div>
 	</div>
 	<div class="popout" popout>
 		<a class="close-button" close-popout>
@@ -121,6 +121,13 @@ $links = array(
 				<i class="fa fa-edit" edit></i>
 				<i class="fa fa-trash" delete></i>
 			</div>
+		</div>
+		<div class="task-full-view" template="task-full">
+			<a close-detail>
+				<i class="fa fa-times-circle-o"></i>
+			</a>
+			<div class="title">Testing</div>
+			<div class="description"> asdfas dfasdf as</div>
 		</div>
 		<div class="custom-form" template="task-form" custom-form>
 			<div class="title" title></div>
@@ -172,6 +179,7 @@ $links = array(
 		// 	// VANO.init();
 		// });
 	</script>
+	<div class="overlay" overlay></div>
 	<div class="clicked" clicked></div>
 </body>
 </html>
