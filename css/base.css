@@ -675,9 +675,26 @@ nav {
         transform: translateX(-10px); }
 
 .task-full-view {
+  color: #000;
   max-width: 96%;
   position: fixed;
   z-index: 10000; }
+  .task-full-view .close-detail {
+    color: #999;
+    font-size: 26px;
+    position: absolute;
+    right: 5px;
+    top: 0;
+    z-index: 1000; }
+  .task-full-view .title, .task-full-view .description {
+    padding: 10px 15px 50px; }
+  .task-full-view .title {
+    background-color: #FFF;
+    font-size: 18px;
+    opacity: 0.8; }
+  .task-full-view .description {
+    font-size: 16px;
+    overflow: auto; }
 
 /******************************************************
 	$POP OUT

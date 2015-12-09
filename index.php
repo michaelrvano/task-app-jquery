@@ -114,6 +114,7 @@ $links = array(
 			<div class="title">
 				<strong title></strong><br />
 				<span class="size12 italic" date></span>
+				<div class="clear"></div>
 			</div>
 			<div class="description" description></div>
 			<div class="buttons">
@@ -123,11 +124,14 @@ $links = array(
 			</div>
 		</div>
 		<div class="task-full-view" template="task-full">
-			<a close-detail>
+			<a class="close-detail" close-detail>
 				<i class="fa fa-times-circle-o"></i>
 			</a>
-			<div class="title">Testing</div>
-			<div class="description"> asdfas dfasdf as</div>
+			<div class="title">
+				<span title></span> <br />
+				<span class="size12" date></span>
+			</div>
+			<div class="description" description></div>
 		</div>
 		<div class="custom-form" template="task-form" custom-form>
 			<div class="title" title></div>

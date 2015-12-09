@@ -548,9 +548,30 @@ nav {
 }
 
 .task-full-view {
+	color: $black;
 	max-width:96%;
 	position:fixed;
 	z-index:10000;
+	.close-detail {
+		color:$dark-grey;
+		font-size:26px;
+		position:absolute;
+		right:5px;
+		top:0;
+		z-index:1000;
+	}
+	.title, .description {
+		padding:10px 15px 50px;
+	}
+	.title {
+		background-color: $white;
+		font-size:18px;
+		opacity: 0.8;
+	}
+	.description {
+		font-size:16px;
+		overflow:auto;
+	}
 }
 
 

@@ -61,6 +61,9 @@ Task.prototype.fullView = function() {
 			'left:'+_this.posX+'px;'+
 		'';
 		_this.detail_html.attr('style', style);
+		_this.detail_html.find('[title]').html(_this.title);
+		_this.detail_html.find('[description]').html(_this.description);
+		_this.detail_html.find('[date]').html(_this.date_created);
 		$('body').append(_this.detail_html);
 		$('[overlay]').addClass('display');
 		$('[overlay]').click(function() { _this.closeFullView(); });
