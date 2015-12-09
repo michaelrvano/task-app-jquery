@@ -5,6 +5,8 @@ var APP = APP || {};
 ==========================*/
 var Task = function(data) {
 	var _this = this;
+	_this.title_limit = 20;
+	_this.description_limit = 145;
 	_this.id = data.id;
 	_this.background_color = data.background_color;
 	_this.category_name = data.category;
@@ -20,7 +22,48 @@ Task.prototype.buildHTML = function() {
 	if (typeof APP.templates['task'] !== typeof undefined)
 	{
 		_this.html = APP.templates['task'].clone(true);
+		_this.html.attr('style', 'background-color:'+_this.background_color+';');
+		_this.html.find('[date]').html(_this.date_created);
+		if (_this.title.length > _this.title_limit) 
+		{
+			_this.html.find('[title]').html(_this.title.substring(0,_this.title_limit)+'...');	
+		}
+		else 
+		{
+			_this.html.find('[title]').html(_this.title);
+		}
+		if (_this.description.length > _this.description_limit) 
+		{
+			_this.html.find('[description]').html(_this.description.substring(0,_this.description_limit)+'...');	
+		}
+		else 
+		{
+			_this.html.find('[description]').html(_this.description);
+		}
+		_this.html.click(function() { _this.fullView(); });
+		_this.html.find('[mark-complete]').click(function(e) { _this.markComplete(e); });
+		_this.html.find('[edit]').click(function(e) { _this.edit(e); });
+		_this.html.find('[delete]').click(function(e) { _this.delete(e); });
 	}
+};
+Task.prototype.fullView = function() {
+	var _this = this;
+	console.log('Full View!');	
+};
+Task.prototype.markComplete = function(e) {
+	e.stopPropagation();
+	var _this = this;
+	console.log(_this.id + 'Completed!');	
+};
+Task.prototype.edit = function(e) {
+	e.stopPropagation();
+	var _this = this;
+	console.log('Editing - ' + _this.id);	
+};
+Task.prototype.delete = function(e) {
+	e.stopPropagation();
+	var _this = this;
+	console.log('Deleting - '  + _this.id);	
 };
 
 /* ========================
@@ -266,6 +309,7 @@ APP = {
 			class: 'tasks',
 			action: 'getTasks'
 		};
+		_this.tasks = [];
 		$.getJSON(_this.url_api, post_data, function(data){
 			if (!$.isEmptyObject(data)) 
 			{
@@ -290,7 +334,7 @@ APP = {
 				if (task.is_complete == 1) { continue; }
 				else 
 				{
-
+					$target.append(task.html);
 				}
 			}
 		}

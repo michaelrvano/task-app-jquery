@@ -96,10 +96,7 @@ $links = array(
 			<div class="size18 mb10 bold">Category Legend</div>
 			<div category-legend></div>
 		</div>
-		<div class="col-md-8" tasks>
-				
-				
-		</div>
+		<div class="col-md-8" tasks></div>
 	</div>
 	<div class="popout" popout>
 		<a class="close-button" close-popout>
@@ -114,12 +111,15 @@ $links = array(
 			- <span name></span>
 		</div>
 		<div class="task" template="task">
-			<div class="title" title></div>
+			<div class="title">
+				<strong title></strong><br />
+				<span class="size12 italic" date></span>
+			</div>
 			<div class="description" description></div>
-			<div class="button">
-				<i class="fa fa-check"></i>
-				<i class="fa fa-edit"></i>
-				<i class="fa fa-trash"></i>
+			<div class="buttons">
+				<i class="fa fa-check" mark-complete></i>
+				<i class="fa fa-edit" edit></i>
+				<i class="fa fa-trash" delete></i>
 			</div>
 		</div>
 		<div class="custom-form" template="task-form" custom-form>

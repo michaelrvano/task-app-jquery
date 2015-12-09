@@ -479,10 +479,14 @@ nav {
 	margin-top:80px;
 	&.standard {
 		.task {
-			@include box-shadow(0, 0, 5px, 0, rgba(0,0,0,0.1));
+			@include box-shadow(0, 0, 5px, 0, rgba(0,0,0,0.2));
 			color:#000;
+			cursor:pointer;
 			display:inline-block;
 			margin:0 1% 20px;
+			min-height:150px;
+			position: relative;
+			vertical-align:top; 
 			width:22%;
 			.title,
 			.description {
@@ -493,10 +497,29 @@ nav {
 				background-color:rgba(255,255,255,0.8);
 			}
 			.buttons {
-				
+				position:absolute;
+				bottom:5px;
+				right:0;
+				font-size:17px;
+				visibility:hidden;
+				opacity: 0;
+				.fa {
+					padding:5px;
+					background-color:$white;
+					@include border-radius(50%);
+					&:hover {
+						color:$white;
+						background-color:$purple;
+					}
+				}
 			}
 			&:hover {
 				@include box-shadow(0,0,5px,0,rgba(120,17,152,0.5));
+				.buttons {
+					visibility: visible;
+					opacity: 1;
+					@include transform(translateX(-10px));
+				}
 			}
 
 		}

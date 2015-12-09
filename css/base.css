@@ -609,12 +609,16 @@ nav {
 .tasks {
   margin-top: 80px; }
   .tasks.standard .task {
-    -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
     color: #000;
+    cursor: pointer;
     display: inline-block;
     margin: 0 1% 20px;
+    min-height: 150px;
+    position: relative;
+    vertical-align: top;
     width: 22%; }
     .tasks.standard .task .title,
     .tasks.standard .task .description {
@@ -622,10 +626,33 @@ nav {
     .tasks.standard .task .title {
       font-size: 16px;
       background-color: rgba(255, 255, 255, 0.8); }
+    .tasks.standard .task .buttons {
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      font-size: 17px;
+      visibility: hidden;
+      opacity: 0; }
+      .tasks.standard .task .buttons .fa {
+        padding: 5px;
+        background-color: #FFF;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        border-radius: 50%; }
+        .tasks.standard .task .buttons .fa:hover {
+          color: #FFF;
+          background-color: #781198; }
     .tasks.standard .task:hover {
       -moz-box-shadow: 0 0 5px 0 rgba(120, 17, 152, 0.5);
       -webkit-box-shadow: 0 0 5px 0 rgba(120, 17, 152, 0.5);
       box-shadow: 0 0 5px 0 rgba(120, 17, 152, 0.5); }
+      .tasks.standard .task:hover .buttons {
+        visibility: visible;
+        opacity: 1;
+        -ms-transform: translateX(-10px);
+        -webkit-transform: translateX(-10px);
+        transform: translateX(-10px); }
 
 /******************************************************
 	$POP OUT
